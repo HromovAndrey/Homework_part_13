@@ -1,42 +1,47 @@
-# Завдання 1
-# Маємо певний словник з назвами країн і столиць. Назва
-# країни використовується як ключ, назва столиці — як значення. Реалізуйте: додавання, видалення, пошук, редагування,
-# збереження та завантаження даних (використовуючи стиснення та розпакування).
-
+# Завдання 2
+# Маємо певний словник з назвами музичних груп (виконавців) та альбомів. Назва групи використовується як ключ,
+# назва альбомів — як значення. Реалізуйте: додавання, видалення, пошук, редагування, збереження та завантаження
+# даних (використовуючи стиснення та розпакування).
 import pickle
 import gzip
-countries_capitals = {
-    "Україна": "Київ",
-    "США": "Вашингтон",
-    "Франція": "Париж",
-    "Німеччина": "Берлін",
-    "Італія": "Рим"
+
+bands_albums = {
+    "The Beatles": "Abbey Road",
+    "Pink Floyd": "The Dark Side of the Moon",
+    "Led Zeppelin": "Led Zeppelin IV",
+    "Queen": "A Night at the Opera",
+    "The Rolling Stones": "Exile on Main St."
 }
 
-def add_country(country, capital):
-    countries_capitals[country] = capital
-    print("Країну '{}' зі столицею '{}' успішно додано.".format(country, capital))
-def remove_country(country):
-    if country in countries_capitals:
-        del countries_capitals[country]
-        print("Країну '{}' успішно видалено.".format(country))
+def add_band(band, album):
+    bands_albums[band] = album
+    print("Музичну групу '{}' з альбомом '{}' успішно додано.".format(band, album))
+
+def remove_band(band):
+    if band in bands_albums:
+        del bands_albums[band]
+        print("Музичну групу '{}' успішно видалено.".format(band))
     else:
-        print("Країна '{}' не знайдена.".format(country))
-def find_capital(country):
-    if country in countries_capitals:
-        print("Столиця країни '{}': '{}'".format(country, countries_capitals[country]))
+        print("Музична група '{}' не знайдена.".format(band))
+
+def find_album(band):
+    if band in bands_albums:
+        print("Альбом музичної групи '{}': '{}'".format(band, bands_albums[band]))
     else:
-        print("Країна '{}' не знайдена.".format(country))
-def edit_capital(country, new_capital):
-    if country in countries_capitals:
-        countries_capitals[country] = new_capital
-        print("Столицю країни '{}' успішно змінено на '{}'.".format(country, new_capital))
+        print("Музична група '{}' не знайдена.".format(band))
+
+def edit_album(band, new_album):
+    if band in bands_albums:
+        bands_albums[band] = new_album
+        print("Альбом музичної групи '{}' успішно змінено на '{}'.".format(band, new_album))
     else:
-        print("Країна '{}' не знайдена.".format(country))
+        print("Музична група '{}' не знайдена.".format(band))
+
 def save_data(filename):
     with gzip.open(filename, 'wb') as f:
-        pickle.dump(countries_capitals, f)
+        pickle.dump(bands_albums, f)
     print("Дані успішно збережено у файлі {}.".format(filename))
+
 def load_data(filename):
     try:
         with gzip.open(filename, 'rb') as f:
@@ -46,11 +51,13 @@ def load_data(filename):
     except FileNotFoundError:
         print("Файл {} не знайдено.".format(filename))
         return None
-add_country("Іспанія", "Мадрид")
-remove_country("Франція")
-find_capital("Україна")
-edit_capital("Україна", "Львів")
-save_data("countries_data.pklz")
-loaded_data = load_data("countries_data.pklz")
+
+add_band("Metallica", "Master of Puppets")
+remove_band("Pink Floyd")
+find_album("The Beatles")
+edit_album("The Rolling Stones", "Sticky Fingers")
+
+save_data("bands_data.pklz")
+loaded_data = load_data("bands_data.pklz")
 if loaded_data:
     print("Завантажені дані:", loaded_data)
